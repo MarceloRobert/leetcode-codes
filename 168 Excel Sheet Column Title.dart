@@ -30,5 +30,5 @@ void main() {
     52, // AZ
   ];
   Solution sol = Solution();
-  print(sol.convertToTitle(26));
+  print(sol.convertToTitle(tests[1]));
 }
