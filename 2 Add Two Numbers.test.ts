@@ -4,29 +4,18 @@
 
 // You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 
-
-// Definition for singly-linked list.
-class ListNode {
-    val: number
-    next: ListNode | null
-    constructor(val?: number, next?: ListNode | null) {
-        this.val = (val===undefined ? 0 : val)
-        this.next = (next===undefined ? null : next)
-    }
-}
-
-// Helper function to log ordered list
-function logList(list:ListNode):void {
-    let result = (list.val).toString();
-    list = list.next;
-    while (list != null) {
-        result += ", " + (list.val).toString();
-        list = list.next;
-    }
-    console.log(result);
-    return;
-}
-
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+import ListNode from "./shared/listNode";
 
 function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
     if (l1 == null)
@@ -103,7 +92,7 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
         nextNode = nextNode.next;
         nextNode.next = new ListNode(1);
     }
-    logList(result);
+    result.log();
 
 
     return result;
