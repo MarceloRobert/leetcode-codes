@@ -31,11 +31,12 @@ export default class ListNode {
     
         const head = new ListNode();
         let current = head;
-        for (let i = 0; i < array.length; i++) {
+        for (var i = 0; i < array.length-1; i++) {
             current.val = array[i];
             current.next = new ListNode();
             current = current.next;
         }
+        current.val = array[i]; // last element shouldn't receive next listnode
     
         return head;
     }
