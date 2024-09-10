@@ -26,32 +26,47 @@ function insertGreatestCommonDivisors(head: ListNode | null): ListNode | null {
         return head;
     }
     let current = head;
-    let gcd:number;
     let middle:ListNode;
 
     // if the next is null, then it's the last element, add nothing
     while(current?.next != null) {
 
         // get greatest common divisor
-        // scans from highest possible down, the first that divides both is the greatest divisor
-        if (current.next.val > current.val) {
-            gcd = current.val;
-        } else {
-            gcd = current.next.val;
-        }
-        for (let i = gcd; i>=1; i--) {
-            if (current.val%i == 0 && current.next.val%i == 0) {
-                gcd = i;
-                break;
-            }
-        }
-        middle = new ListNode(gcd);
+        middle = new ListNode(euclidianGCD(current.val, current.next.val));
+
+        // add that between the current and next nodes
         middle.next = current.next;
         current.next = middle;
         current = middle.next;
     }
     return head;
 };
+
+// finds greatest common divisor using the euclidean algorithm
+function euclidianGCD(a:number, b:number):number {
+    let left:number;
+    let middle:number;
+    let rest:number;
+
+    if (a > b) {
+        middle = a;
+        rest = b;
+    } else if (b > a) {
+        middle = b;
+        rest = a;
+    } else {
+        return a;
+    }
+
+    while (rest > 0) {
+        left = middle;
+        middle = rest;
+        rest = left % middle;
+    }
+
+    return middle;
+}
+
 
 describe("insertGreatestCommonDivisors test", () => {
     test("case 1", () => {
