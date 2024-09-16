@@ -24,7 +24,6 @@ function findMinDifference(timePoints: string[]): number {
     // compare inside list
     for (let i = 1; i < minuteList.length; i++) {
         result = Math.min(result, minuteList[i] - minuteList[i-1]);
-        result = Math.min(result, minuteList[i-1]+1440 -minuteList[i]);
     }
     // compare between last and first elements
     result = Math.min(result, minuteList[minuteList.length-1] - minuteList[0]);
