@@ -7,7 +7,7 @@
 // Constraints:
 
 // 1 <= nums.length <= 100
-// 0 <= nums[i] <= 109
+// 0 <= nums[i] <= 10^9
 
 /// find largest "first place" number, find largest second place, third place;
 //  pick largest of them, add, remove from available numbers, repeat
@@ -16,11 +16,11 @@
 //      [30, 300] => 30300 because in 30 when the third digit is empty, the next biggest digit is 3 from 300 while the third biggest number from 300 is 0
 
 class numberDigit {
-    first:number|null;
+    first:number;
     second:number|null;
     third:number|null;
 
-    constructor(first:number|null, second:number|null, third:number|null) {
+    constructor(first:number, second:number|null, third:number|null) {
         this.first = first;
         this.second = second;
         this.third = third;
@@ -54,44 +54,63 @@ function largestNumber(nums: number[]): string {
 
     // sorts array from highest to lowest
     pool.sort((a, b) => {
-        let score = 0;
-        if (a.first != null && b.first != null) {
-            if (a.first < b.first) {
-                score += 100;
-            } else if (a.first > b.first) {
-                score -= 100;
-            }
-        } else if (a.first != null) {
-            score += 100;
-        } else if (b.first != null) {
-            score -= 100;
+        // check if the first digit is different
+        if (a.first < b.first) {
+            return 1;
+        } else if (a.first > b.first) {
+            return -1;
         }
 
-        if (a.second != null && b.second != null) {
-            if (a.second < b.second) {
-                score += 10;
-            } else if (a.second > b.second) {
-                score -= 10;
+        // both firsts are equal
+        // check if any of the seconds are null
+        if (a.second == null && b.second != null) {
+            if (b.second > b.first) {
+                return 1;
             }
-        } else if (a.second != null) {
-            score += 10;
-        } else if (b.second != null) {
-            score -= 10;
+            return -1;
+        } else if (a.second != null && b.second == null) {
+            if (a.second > a.first) {
+                return -1;
+            }
+            return 1;
+        } else if (a.second == null && b.second == null) {
+            return 0;
         }
 
-        if (a.third != null && b.third != null) {
-            if (a.third < b.third) {
-                score += 1;
-            } else if (a.third > b.third) {
-                score -= 1;
-            }
-        } else if (a.third != null) {
-            score += 1;
-        } else if (b.third != null) {
-            score -= 1;
+        // both seconds aren't null
+        // check if they are different
+        if (a.second < b.second) {
+            return 1;
+        } else if (a.second > b.second) {
+            return -1;
         }
 
-        return score;
+        // both seconds are equal
+        // check if any of the thirds are null
+        if (a.third == null && b.third != null) {
+            if (b.third > b.first) {
+                return 1;
+            }
+            return -1;
+        } else if (a.third != null && b.third == null) {
+            if (a.third > a.first) {
+                return 1;
+            }
+            return 1;
+        } else if (a.third == null && b.third == null) {
+            return 0;
+        }
+
+        // both thirds aren't null
+        // check if they are different
+        if (a.third < b.third) {
+            return 1;
+        } else if (a.third > b.third) {
+            return -1;
+        }
+
+        // both thirds are equal
+        return 0;
     })
     console.log(pool);
     
@@ -102,63 +121,15 @@ function largestNumber(nums: number[]): string {
     return result;
 };
 
-/*
-// while (pool.length > 0) {
-//     // From the pool, find the largest next number
-//     let choice:numberDigit;
-//     choice = findNextLargest(pool, 0, 1);
-
-//     // remove that from the pool, add to result, repeat
-//     result += choice.toString();
-//     pool.splice(pool.indexOf(choice), 1);
-// }
-function findNextLargest(pool:numberDigit[], largest:number, index:number):numberDigit {
-    // find next largest to compare to
-    if (index == 1) {
-        for (let i = 0; i<pool.length; i++) {
-            if (pool[i].first > largest) {
-                largest = pool[i].first;
-            }
-        }
-    } else if (index == 2) {
-        for (let i = 0; i<pool.length; i++) {
-            if (pool[i].second != null && pool[i].second > largest) {
-                largest = pool[i].second;
-            }
-        }
-    } else if (index == 3) {
-        for (let i = 0; i<pool.length; i++) {
-            if (pool[i].third != null && pool[i].third > largest) {
-                largest = pool[i].third;
-            }
-        }
-    } else {
-        return pool[0];
-    }
-    
-    // find available numbers from pool
-    let available:numberDigit[] = [];
-    for (let i = 0; i<pool.length; i++) {
-        if (index == 1) {
-            if (pool[i].first >= largest) {
-                available.push(pool[i]);
-            }
-        } else if (index == 2) {
-            if (pool[i].second >= largest) {
-                available.push(pool[i]);
-            }
-        } else {
-            if (pool[i].third >= largest) {
-                available.push(pool[i]);
-            }
-        }
-    }
-
-    return findNextLargest(available, largest, index+1);
-}
-    */
-
 describe("largestNumber test", () => {
+    test("sub 1", () => {
+        expect(largestNumber([432, 43243])).toBe("43243432");
+    })
+
+    test("own 6", () => {
+        expect(largestNumber([343, 34])).toBe("34343");
+    })
+
     test("own 5", () => {
         expect(largestNumber([20, 1])).toBe("201");
     });
