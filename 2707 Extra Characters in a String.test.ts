@@ -15,7 +15,7 @@
 // need a function that returns the amount of extra characters from a string when it starts at certain position
 // USE DYNAMIC PROGRAMMING
 
-let minExtraHere:number[] = Array(51).fill(-1);
+let minExtraHere:number[] = Array(51).fill(50);
 
 function checkExtras(runCount:number, here:number, s:string, dictionary:string[]) {
     if (s.length == 0) {
@@ -35,20 +35,12 @@ function checkExtras(runCount:number, here:number, s:string, dictionary:string[]
     }
 
     if (validWords.length == 0) {
+        minExtraHere[here] = Math.min(minExtraHere[here], runCount);
         checkExtras(runCount+1, here, s.slice(1), dictionary);
-        if (minExtraHere[here] == -1) {
-            minExtraHere[here] = runCount;
-        } else {
-            minExtraHere[here] = Math.min(minExtraHere[here], runCount);
-        }
     } else {
         for (let word of validWords) {
+            minExtraHere[here] = Math.min(minExtraHere[here], runCount);
             checkExtras(runCount, here+word.length, s.slice(word.length), dictionary);
-            if (minExtraHere[here] == -1) {
-                minExtraHere[here] = runCount;
-            } else {
-                minExtraHere[here] = Math.min(minExtraHere[here], runCount);
-            }
         }
     }
 
@@ -67,7 +59,7 @@ function minExtraChar(s: string, dictionary: string[]): number {
 
     let runCountStart:number;
     for (let i = 0; i < s.length; i++) {
-        if (minExtraHere[i] == -1) {
+        if (minExtraHere[i] == 50) {
             runCountStart = i;
         } else {
             runCountStart = minExtraHere[i];
