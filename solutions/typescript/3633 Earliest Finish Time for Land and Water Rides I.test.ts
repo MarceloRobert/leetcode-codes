@@ -55,6 +55,7 @@ Constraints:
     1 <= landStartTime[i], landDuration[i], waterStartTime[j], waterDuration[j] <= 1000
 */
 
+// @ts-nocheck - duplicate function name with 3635, it's how leetcode named them.
 function earliestFinishTime(landStartTime: number[], landDuration: number[], waterStartTime: number[], waterDuration: number[]): number {
     // Thought process:
     // looks like a data structure problem
