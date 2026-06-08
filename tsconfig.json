@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "esModuleInterop": true,
-        "types": ["jest"],
+        "types": ["jest", "node"],
         "target": "es2024",
         "lib": ["es2024"]
     }
